@@ -3,17 +3,17 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { ShoppingCart, Moon, Sun } from 'lucide-react';
+import { ShoppingCart, Moon, Sun, Utensils } from 'lucide-react';
 
 export default function Navigation() {
   const pathname = usePathname();
   const [isOwnerLoggedIn, setIsOwnerLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const navItems = [
     { href: '/', label: 'Home' },
-    { href: '/browse-cuisines', label: 'Cuisines' },
     { href: '/order', label: 'Orders' },
     { href: '/reservations', label: 'Reservations' },
   ];
@@ -22,6 +22,7 @@ export default function Navigation() {
     // Check if user is logged in as owner (only runs on client-side)
     const userType = localStorage.getItem('userType');
     setIsOwnerLoggedIn(userType === 'owner');
+    setIsLoggedIn(!!userType);
     
     // Load cart count
     const savedCart = localStorage.getItem('foodCourtCart');
@@ -70,31 +71,13 @@ export default function Navigation() {
     <nav className="bg-white dark:bg-gray-900 shadow-lg border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-18">
-          <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            NextGen Mall Food Court
-          </Link>
-          
-          {/* Auth Links */}
-          <Link
-            href="/login"
-            className={`text-lg font-semibold transition-all duration-300 hover:text-purple-600 dark:hover:text-purple-400 hover:scale-105 ${
-              pathname === '/login' 
-                ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400' 
-                : 'text-gray-700 dark:text-gray-300'
-            }`}
-          >
-            Login
-          </Link>
-          
-          <Link
-            href="/signup"
-            className={`text-lg font-semibold transition-all duration-300 hover:text-purple-600 dark:hover:text-purple-400 hover:scale-105 ${
-              pathname === '/signup' 
-                ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400' 
-                : 'text-gray-700 dark:text-gray-300'
-            }`}
-          >
-            Sign Up
+          <Link href="/" className="flex items-center space-x-3">
+            <div className="bg-gradient-to-r from-orange-500 to-red-500 p-2 rounded-full">
+              <Utensils className="w-8 h-8 text-white" />
+            </div>
+            <span className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
+              FoodCourt Hub
+            </span>
           </Link>
           
           <div className="hidden md:flex items-center space-x-8">
@@ -102,9 +85,9 @@ export default function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`text-lg font-semibold transition-all duration-300 hover:text-purple-600 dark:hover:text-purple-400 hover:scale-105 ${
+                className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 dark:hover:text-orange-400 hover:scale-105 ${
                   pathname === item.href 
-                    ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400' 
+                    ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-600 dark:border-orange-400' 
                     : 'text-gray-700 dark:text-gray-300'
                 }`}
               >
@@ -112,14 +95,25 @@ export default function Navigation() {
               </Link>
             ))}
             
+            <Link
+              href="/signup"
+              className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 dark:hover:text-orange-400 hover:scale-105 ${
+                pathname === '/signup' 
+                  ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-600 dark:border-orange-400' 
+                  : 'text-gray-700 dark:text-gray-300'
+              }`}
+            >
+              Sign Up
+            </Link>
+            
             {/* Cart Icon */}
             <Link
               href="/checkout"
-              className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              className="relative p-2 text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
             >
               <ShoppingCart className="w-6 h-6" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                   {cartCount}
                 </span>
               )}
@@ -128,7 +122,7 @@ export default function Navigation() {
             {/* Dark Mode Toggle */}
             <button
               onClick={toggleDarkMode}
-              className="p-2 text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              className="p-2 text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
             >
               {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
             </button>
@@ -136,9 +130,9 @@ export default function Navigation() {
             {isOwnerLoggedIn && (
               <Link
                 href="/owner-dashboard"
-                className={`text-lg font-semibold transition-all duration-300 hover:text-purple-600 dark:hover:text-purple-400 hover:scale-105 ${
+                className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 dark:hover:text-orange-400 hover:scale-105 ${
                   pathname === '/owner-dashboard' 
-                    ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400' 
+                    ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-600 dark:border-orange-400' 
                     : 'text-gray-700 dark:text-gray-300'
                 }`}
               >
@@ -155,7 +149,7 @@ export default function Navigation() {
             >
               <ShoppingCart className="w-6 h-6" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
                   {cartCount}
                 </span>
               )}
@@ -182,7 +176,6 @@ export default function Navigation() {
               {isOwnerLoggedIn && (
                 <option value="/owner-dashboard">Dashboard</option>
               )}
-              <option value="/login">Login</option>
               <option value="/signup">Sign Up</option>
             </select>
           </div>

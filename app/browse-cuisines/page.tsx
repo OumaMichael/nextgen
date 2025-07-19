@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { restaurants, cuisines } from '@/lib/data';
 
 interface CartItem {
@@ -14,7 +13,10 @@ interface CartItem {
 }
 
 export default function BrowseCuisines() {
-  const [selectedCuisine, setSelectedCuisine] = useState('');
+  const searchParams = useSearchParams();
+  const cuisineParam = searchParams.get('cuisine');
+  
+  const [selectedCuisine, setSelectedCuisine] = useState(cuisineParam || '');
   const [selectedRestaurant, setSelectedRestaurant] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -100,7 +102,7 @@ export default function BrowseCuisines() {
   return (
     <div className="relative">
       <div className="mb-8">
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-6">Browse by Cuisine</h1>
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-6">Browse by Cuisine</h1>
         <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
           Find restaurants by cuisine type or search by name
         </p>
@@ -111,7 +113,7 @@ export default function BrowseCuisines() {
             placeholder="Search restaurants..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 px-6 py-4 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            className="flex-1 px-6 py-4 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
           />
           
           <select
@@ -120,7 +122,7 @@ export default function BrowseCuisines() {
               setSelectedCuisine(e.target.value);
               setSelectedRestaurant('');
             }}
-            className="px-6 py-4 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+            className="px-6 py-4 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
           >
             <option value="">All Cuisines</option>
             {cuisines.map((cuisine) => (
@@ -133,7 +135,7 @@ export default function BrowseCuisines() {
           {cart.length > 0 && (
             <button
               onClick={() => setShowCart(!showCart)}
-              className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 text-lg font-semibold rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 relative shadow-lg"
+              className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-4 text-lg font-semibold rounded-xl hover:from-orange-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 relative shadow-lg"
             >
               Cart ({cart.length})
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-sm rounded-full w-6 h-6 flex items-center justify-center font-bold">
@@ -141,39 +143,6 @@ export default function BrowseCuisines() {
               </span>
             </button>
           )}
-        </div>
-      </div>
-
-      {/* Cuisine Categories */}
-      <div className="mb-6">
-        <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-6">Cuisine Categories</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-6">
-          {cuisines.map((cuisine) => (
-            <button
-              key={cuisine.name}
-              onClick={() => {
-                setSelectedCuisine(selectedCuisine === cuisine.name ? '' : cuisine.name);
-                setSelectedRestaurant('');
-              }}
-              className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 ${
-                selectedCuisine === cuisine.name ? 'ring-2 ring-blue-500' : ''
-              }`}
-            >
-              <div className="relative h-32 w-full">
-                <Image
-                  src={cuisine.image}
-                  alt={cuisine.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-4">
-                <p className="text-lg font-semibold text-gray-800 dark:text-white text-center">
-                  {cuisine.name}
-                </p>
-              </div>
-            </button>
-          ))}
         </div>
       </div>
 
@@ -190,13 +159,13 @@ export default function BrowseCuisines() {
                 onClick={() => setSelectedRestaurant(restaurant.id)}
                 className={`p-6 border-2 rounded-xl text-left transition-all duration-300 transform hover:scale-105 ${
                   selectedRestaurant === restaurant.id 
-                    ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' 
-                    : 'border-gray-200 dark:border-gray-600 hover:border-purple-300 dark:hover:border-purple-400 bg-white dark:bg-gray-700'
+                    ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20' 
+                    : 'border-gray-200 dark:border-gray-600 hover:border-orange-300 dark:hover:border-orange-400 bg-white dark:bg-gray-700'
                 }`}
               >
                 <h3 className="text-xl font-bold text-gray-800 dark:text-white">{restaurant.name}</h3>
                 <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">{restaurant.description}</p>
-                <p className="text-lg text-purple-600 dark:text-purple-400 mt-3 font-semibold">{restaurant.dishes.length} dishes available</p>
+                <p className="text-lg text-orange-600 dark:text-orange-400 mt-3 font-semibold">{restaurant.dishes.length} dishes available</p>
               </button>
             ))}
           </div>
@@ -232,7 +201,7 @@ export default function BrowseCuisines() {
                       dish.price, 
                       selectedRestaurantData?.name || restaurantsForCuisine[0]?.name || ''
                     )}
-                    className="bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                    className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:from-orange-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
                   >
                     Add to Cart
                   </button>
@@ -243,24 +212,16 @@ export default function BrowseCuisines() {
         </div>
       )}
 
-      {/* All Restaurants Grid (when no cuisine selected) */}
+      {/* All Restaurants Grid */}
       {!selectedCuisine && (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {filteredRestaurants.map((restaurant) => (
             <div key={restaurant.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
-              <div className="relative h-56 w-full">
-                <Image
-                  src={restaurant.image}
-                  alt={restaurant.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
               <div className="p-6">
                 <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
                   {restaurant.name}
                 </h3>
-                <p className="text-lg text-purple-600 dark:text-purple-400 font-semibold mb-3">
+                <p className="text-lg text-orange-600 dark:text-orange-400 font-semibold mb-3">
                   {restaurant.cuisine}
                 </p>
                 <p className="text-gray-600 dark:text-gray-300 text-lg mb-6">
@@ -271,7 +232,7 @@ export default function BrowseCuisines() {
                     setSelectedCuisine(restaurant.cuisine);
                     setSelectedRestaurant(restaurant.id);
                   }}
-                  className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                  className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white px-6 py-3 rounded-xl text-lg font-semibold hover:from-orange-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
                 >
                   View Menu
                 </button>
@@ -334,7 +295,7 @@ export default function BrowseCuisines() {
                     </div>
                     <button
                       onClick={handleCheckout}
-                      className="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-4 rounded-xl text-xl font-bold hover:from-green-600 hover:to-emerald-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
+                      className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-xl text-xl font-bold hover:from-orange-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
                     >
                       Proceed to Checkout
                     </button>

@@ -21,8 +21,30 @@ export default function Reservations() {
   const [guestCount, setGuestCount] = useState(1);
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [showReservations, setShowReservations] = useState(false);
+  const [reservedTables, setReservedTables] = useState<string[]>([]);
 
-  const availableTables = tables.filter(table => table.status === 'available');
+  // Check if user is logged in
+  const isLoggedIn = typeof window !== 'undefined' && localStorage.getItem('userType');
+
+  if (!isLoggedIn) {
+    return (
+      <div className="text-center py-12">
+        <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-6">Please Log In</h1>
+        <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
+          You need to be logged in to make reservations
+        </p>
+        <a
+          href="/signup"
+          className="inline-block bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-4 rounded-xl text-lg font-bold hover:from-orange-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
+        >
+          Sign Up Now
+        </a>
+      </div>
+    );
+  }
+  const availableTables = tables.filter(table => 
+    table.status === 'available' && !reservedTables.includes(table.id)
+  );
 
   const handleReservation = (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,6 +67,7 @@ export default function Reservations() {
     };
     
     setReservations([...reservations, newReservation]);
+    setReservedTables([...reservedTables, selectedTable]);
     
     alert(`Table reserved successfully!\n\nTable: ${selectedTableInfo?.number}\nDate: ${reservationDate}\nTime: ${reservationTime}\nGuests: ${guestCount}`);
     
@@ -57,11 +80,15 @@ export default function Reservations() {
   };
 
   const cancelReservation = (reservationId: string) => {
-    setReservations(reservations.map(res => 
-      res.id === reservationId 
-        ? { ...res, status: 'cancelled' }
-        : res
-    ));
+    const reservation = reservations.find(res => res.id === reservationId);
+    if (reservation) {
+      setReservations(reservations.map(res => 
+        res.id === reservationId 
+          ? { ...res, status: 'cancelled' }
+          : res
+      ));
+      setReservedTables(reservedTables.filter(tableId => tableId !== reservation.tableId));
+    }
   };
 
   const getTableNumber = (tableId: string) => {
@@ -71,7 +98,7 @@ export default function Reservations() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-5xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-6">Table Reservations</h1>
+        <h1 className="text-5xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent mb-6">Table Reservations</h1>
         <p className="text-xl text-gray-600 dark:text-gray-300">
           Reserve a shared table in our food court for your dining experience
         </p>
@@ -81,7 +108,7 @@ export default function Reservations() {
             onClick={() => setShowReservations(false)}
             className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
               !showReservations 
-                ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white' 
+                ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white' 
                 : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
             }`}
           >
@@ -91,7 +118,7 @@ export default function Reservations() {
             onClick={() => setShowReservations(true)}
             className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
               showReservations 
-                ? 'bg-gradient-to-r from-purple-500 to-blue-500 text-white' 
+                ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white' 
                 : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
             }`}
           >
@@ -110,13 +137,13 @@ export default function Reservations() {
               <div 
                 key={table.id} 
                 className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                  table.status === 'reserved' 
+                  table.status === 'reserved' || reservedTables.includes(table.id)
                     ? 'border-red-200 bg-red-50' 
                     : selectedTable === table.id
                     ? 'border-amber-500 bg-amber-50'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
-                onClick={() => table.status === 'available' && setSelectedTable(table.id)}
+                onClick={() => table.status === 'available' && !reservedTables.includes(table.id) && setSelectedTable(table.id)}
               >
                 <div className="flex items-center justify-between">
                   <div>
@@ -128,11 +155,11 @@ export default function Reservations() {
                     </p>
                   </div>
                   <span className={`px-4 py-2 rounded-full text-lg font-semibold ${
-                    table.status === 'available' 
+                    table.status === 'available' && !reservedTables.includes(table.id)
                       ? 'bg-green-100 text-green-800' 
                       : 'bg-red-100 text-red-800'
                   }`}>
-                    {table.status === 'available' ? 'Available' : 'Reserved'}
+                    {table.status === 'available' && !reservedTables.includes(table.id) ? 'Available' : 'Reserved'}
                   </span>
                 </div>
               </div>
@@ -152,7 +179,7 @@ export default function Reservations() {
                 type="text"
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
-                className="w-full px-4 py-3 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                 placeholder="Enter your name"
                 required
               />
@@ -165,7 +192,7 @@ export default function Reservations() {
               <select
                 value={selectedTable}
                 onChange={(e) => setSelectedTable(e.target.value)}
-                className="w-full px-4 py-3 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                 required
               >
                 <option value="">Choose a table...</option>
@@ -187,7 +214,7 @@ export default function Reservations() {
                   value={reservationDate}
                   onChange={(e) => setReservationDate(e.target.value)}
                   min={new Date().toISOString().split('T')[0]}
-                  className="w-full px-4 py-3 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   required
                 />
               </div>
@@ -199,7 +226,7 @@ export default function Reservations() {
                 <select
                   value={reservationTime}
                   onChange={(e) => setReservationTime(e.target.value)}
-                  className="w-full px-4 py-3 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                  className="w-full px-4 py-3 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   required
                 >
                   <option value="">Select time...</option>
@@ -236,13 +263,13 @@ export default function Reservations() {
                 onChange={(e) => setGuestCount(parseInt(e.target.value))}
                 min="1"
                 max="8"
-                className="w-full px-4 py-3 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="w-full px-4 py-3 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-4 rounded-xl text-xl font-bold hover:from-purple-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
+              className="w-full bg-gradient-to-r from-orange-500 to-red-500 text-white py-4 rounded-xl text-xl font-bold hover:from-orange-600 hover:to-red-600 transition-all duration-300 transform hover:scale-105 shadow-lg"
             >
               Reserve Table
             </button>
@@ -258,7 +285,7 @@ export default function Reservations() {
               <p className="text-xl text-gray-500 dark:text-gray-400">No reservations found</p>
               <button
                 onClick={() => setShowReservations(false)}
-                className="mt-6 bg-gradient-to-r from-purple-500 to-blue-500 text-white px-8 py-3 rounded-xl text-lg font-semibold hover:from-purple-600 hover:to-blue-600 transition-all duration-300"
+                className="mt-6 bg-gradient-to-r from-orange-500 to-red-500 text-white px-8 py-3 rounded-xl text-lg font-semibold hover:from-orange-600 hover:to-red-600 transition-all duration-300"
               >
                 Make Your First Reservation
               </button>
@@ -270,7 +297,7 @@ export default function Reservations() {
                   key={reservation.id} 
                   className={`border-2 rounded-xl p-6 transition-all duration-300 ${
                     reservation.status === 'confirmed' 
-                      ? 'border-green-200 bg-green-50 dark:bg-green-900/20' 
+                      ? 'border-orange-200 bg-orange-50 dark:bg-orange-900/20' 
                       : reservation.status === 'cancelled'
                       ? 'border-red-200 bg-red-50 dark:bg-red-900/20'
                       : 'border-yellow-200 bg-yellow-50 dark:bg-yellow-900/20'
@@ -304,7 +331,7 @@ export default function Reservations() {
                     <div className="flex flex-col items-end gap-3">
                       <span className={`px-4 py-2 rounded-full text-lg font-semibold ${
                         reservation.status === 'confirmed' 
-                          ? 'bg-green-100 text-green-800' 
+                          ? 'bg-orange-100 text-orange-800' 
                           : reservation.status === 'cancelled'
                           ? 'bg-red-100 text-red-800'
                           : 'bg-yellow-100 text-yellow-800'
