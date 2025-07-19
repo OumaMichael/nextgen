@@ -30,7 +30,6 @@ export default function PopularDishes() {
               <span className="text-xl font-bold text-green-600">
                 KSh {dish.price.toLocaleString()}
               </span>
-              <button className="bg-amber-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-amber-600 transition-colors">
               <button className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors">
                 Order This
               </button>
@@ -61,9 +60,6 @@ export default function PopularDishes() {
           </a>
         </div>
       </div>
-    )
-    )
-    }
     </div>
   );
 }
