@@ -61,6 +61,9 @@ export default function PopularDishes() {
           </a>
         </div>
       </div>
+    )
+    )
+    }
     </div>
   );
 }
