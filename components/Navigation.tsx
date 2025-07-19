@@ -22,7 +22,7 @@ export default function Navigation() {
     <nav className="bg-white shadow-sm border-b border-gray-200">
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <Link href="/" className="text-xl font-bold text-amber-600">
+          <Link href="/" className="text-xl font-bold text-blue-600">
             NextGen Mall Food Court
           </Link>
           
@@ -32,7 +32,7 @@ export default function Navigation() {
                 key={item.href}
                 href={item.href}
                 className={`text-sm font-medium transition-colors hover:text-amber-600 ${
-                  pathname === item.href ? 'text-amber-600' : 'text-gray-600'
+                  pathname === item.href ? 'text-blue-600' : 'text-gray-600'
                 }`}
               >
                 {item.label}

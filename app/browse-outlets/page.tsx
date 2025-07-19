@@ -35,7 +35,7 @@ export default function BrowseOutlets() {
               </p>
               <Link 
                 href={`/order?outlet=${restaurant.id}`}
-                className="w-full bg-amber-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-amber-600 transition-colors block text-center"
+                className="w-full bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors block text-center"
               >
                 Order Now
               </Link>

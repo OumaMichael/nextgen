@@ -93,6 +93,30 @@ export const restaurants: Restaurant[] = [
   },
   {
     id: '5',
+    name: 'Mama Njeri Kitchen',
+    cuisine: 'Coastal',
+    description: 'Traditional coastal dishes with a homely touch',
+    image: 'https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=400',
+    dishes: [
+      { id: '19', name: 'Pilau Rice', price: 800, description: 'Spiced rice with meat', restaurantId: '7', isPopular: true },
+      { id: '20', name: 'Samosas', price: 150, description: 'Crispy pastries with filling', restaurantId: '7' },
+      { id: '21', name: 'Chapati', price: 50, description: 'Soft flatbread', restaurantId: '7' },
+    ]
+  },
+  {
+    id: '8',
+    name: 'Delhi Delights',
+    cuisine: 'Indian',
+    description: 'North Indian specialties and street food',
+    image: 'https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg?auto=compress&cs=tinysrgb&w=400',
+    dishes: [
+      { id: '22', name: 'Chicken Tikka', price: 1400, description: 'Grilled marinated chicken', restaurantId: '8', isPopular: true },
+      { id: '23', name: 'Paneer Curry', price: 1100, description: 'Cottage cheese in spicy gravy', restaurantId: '8' },
+      { id: '24', name: 'Garlic Naan', price: 350, description: 'Garlic flavored bread', restaurantId: '8' },
+    ]
+  },
+  {
+    id: '9',
     name: 'Spice Garden',
     cuisine: 'Indian',
     description: 'Authentic Indian curries and breads',

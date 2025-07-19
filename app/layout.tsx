@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-amber-50 min-h-screen`}>
+      <body className={`${inter.className} bg-gradient-to-br from-blue-50 via-white to-green-50 min-h-screen`}>
         <Navigation />
         <main className="max-w-6xl mx-auto px-4 py-8">
           {children}

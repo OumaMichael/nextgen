@@ -31,6 +31,7 @@ export default function PopularDishes() {
                 KSh {dish.price.toLocaleString()}
               </span>
               <button className="bg-amber-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-amber-600 transition-colors">
+              <button className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-600 transition-colors">
                 Order This
               </button>
             </div>
@@ -48,7 +49,7 @@ export default function PopularDishes() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a 
             href="/browse-outlets"
-            className="bg-amber-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-amber-600 transition-colors"
+            className="bg-blue-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
           >
             Browse All Outlets
           </a>

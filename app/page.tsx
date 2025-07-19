@@ -102,7 +102,7 @@ export default function Home() {
         <div className="text-center">
           <Link 
             href="/browse-outlets"
-            className="inline-block bg-amber-500 text-white px-8 py-3 rounded-lg font-medium hover:bg-amber-600 transition-colors"
+            className="inline-block bg-blue-500 text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors"
           >
             View All Outlets
           </Link>
