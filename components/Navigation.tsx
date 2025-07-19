@@ -74,6 +74,29 @@ export default function Navigation() {
             NextGen Mall Food Court
           </Link>
           
+          {/* Auth Links */}
+          <Link
+            href="/login"
+            className={`text-lg font-semibold transition-all duration-300 hover:text-purple-600 dark:hover:text-purple-400 hover:scale-105 ${
+              pathname === '/login' 
+                ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400' 
+                : 'text-gray-700 dark:text-gray-300'
+            }`}
+          >
+            Login
+          </Link>
+          
+          <Link
+            href="/signup"
+            className={`text-lg font-semibold transition-all duration-300 hover:text-purple-600 dark:hover:text-purple-400 hover:scale-105 ${
+              pathname === '/signup' 
+                ? 'text-purple-600 dark:text-purple-400 border-b-2 border-purple-600 dark:border-purple-400' 
+                : 'text-gray-700 dark:text-gray-300'
+            }`}
+          >
+            Sign Up
+          </Link>
+          
           <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link
@@ -159,6 +182,8 @@ export default function Navigation() {
               {isOwnerLoggedIn && (
                 <option value="/owner-dashboard">Dashboard</option>
               )}
+              <option value="/login">Login</option>
+              <option value="/signup">Sign Up</option>
             </select>
           </div>
         </div>

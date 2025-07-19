@@ -38,7 +38,7 @@ export default function Home() {
         </div>
         
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <Link href="/browse-outlets" className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
             <div className="relative h-56 w-full">
               <Image
                 src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400"
@@ -51,9 +51,9 @@ export default function Home() {
               <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">Tamu Tamu Grills</h3>
               <p className="text-lg text-purple-600 dark:text-purple-400 font-semibold">BBQ Cuisine</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <Link href="/browse-outlets" className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
             <div className="relative h-56 w-full">
               <Image
                 src="https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=400"
@@ -66,9 +66,9 @@ export default function Home() {
               <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">Swahili Plates</h3>
               <p className="text-lg text-purple-600 dark:text-purple-400 font-semibold">Coastal Cuisine</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <Link href="/browse-outlets" className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
             <div className="relative h-56 w-full">
               <Image
                 src="https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=400"
@@ -81,9 +81,9 @@ export default function Home() {
               <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">Burger Bros</h3>
               <p className="text-lg text-purple-600 dark:text-purple-400 font-semibold">Fast Food</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <Link href="/browse-outlets" className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
             <div className="relative h-56 w-full">
               <Image
                 src="https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg?auto=compress&cs=tinysrgb&w=400"
@@ -96,7 +96,7 @@ export default function Home() {
               <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2">Sushi Spot</h3>
               <p className="text-lg text-purple-600 dark:text-purple-400 font-semibold">Japanese Cuisine</p>
             </div>
-          </div>
+          </Link>
         </div>
 
         <div className="text-center">
@@ -119,7 +119,7 @@ export default function Home() {
         </div>
         
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-6 mb-10">
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <Link href="/browse-cuisines" className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
             <div className="relative h-32 w-full">
               <Image
                 src="https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&w=400"
@@ -131,9 +131,9 @@ export default function Home() {
             <div className="p-4">
               <p className="text-lg font-semibold text-gray-800 dark:text-white text-center">Coastal</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <Link href="/browse-cuisines" className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
             <div className="relative h-32 w-full">
               <Image
                 src="https://images.pexels.com/photos/1624487/pexels-photo-1624487.jpeg?auto=compress&cs=tinysrgb&w=400"
@@ -145,9 +145,9 @@ export default function Home() {
             <div className="p-4">
               <p className="text-lg font-semibold text-gray-800 dark:text-white text-center">Indian</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <Link href="/browse-cuisines" className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
             <div className="relative h-32 w-full">
               <Image
                 src="https://images.pexels.com/photos/1410235/pexels-photo-1410235.jpeg?auto=compress&cs=tinysrgb&w=400"
@@ -159,9 +159,9 @@ export default function Home() {
             <div className="p-4">
               <p className="text-lg font-semibold text-gray-800 dark:text-white text-center">Chinese</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <Link href="/browse-cuisines" className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
             <div className="relative h-32 w-full">
               <Image
                 src="https://images.pexels.com/photos/1639557/pexels-photo-1639557.jpeg?auto=compress&cs=tinysrgb&w=400"
@@ -173,9 +173,9 @@ export default function Home() {
             <div className="p-4">
               <p className="text-lg font-semibold text-gray-800 dark:text-white text-center">Fast Food</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <Link href="/browse-cuisines" className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
             <div className="relative h-32 w-full">
               <Image
                 src="https://images.pexels.com/photos/1640770/pexels-photo-1640770.jpeg?auto=compress&cs=tinysrgb&w=400"
@@ -187,9 +187,9 @@ export default function Home() {
             <div className="p-4">
               <p className="text-lg font-semibold text-gray-800 dark:text-white text-center">Vegan</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <Link href="/browse-cuisines" className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
             <div className="relative h-32 w-full">
               <Image
                 src="https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400"
@@ -201,9 +201,9 @@ export default function Home() {
             <div className="p-4">
               <p className="text-lg font-semibold text-gray-800 dark:text-white text-center">BBQ</p>
             </div>
-          </div>
+          </Link>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <Link href="/browse-cuisines" className="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:scale-105 cursor-pointer">
             <div className="relative h-32 w-full">
               <Image
                 src="https://images.pexels.com/photos/357756/pexels-photo-357756.jpeg?auto=compress&cs=tinysrgb&w=400"
@@ -215,7 +215,7 @@ export default function Home() {
             <div className="p-4">
               <p className="text-lg font-semibold text-gray-800 dark:text-white text-center">Japanese</p>
             </div>
-          </div>
+          </Link>
         </div>
 
         <div className="text-center">
