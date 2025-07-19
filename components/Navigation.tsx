@@ -2,9 +2,11 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 export default function Navigation() {
   const pathname = usePathname();
+  const [isOwnerLoggedIn, setIsOwnerLoggedIn] = useState(false);
 
   const navItems = [
     { href: '/', label: 'Home' },
@@ -18,12 +20,11 @@ export default function Navigation() {
     { href: '/login', label: 'Login' },
   ];
 
-  // Only show owner dashboard if user is logged in as owner
-  const showOwnerDashboard = () => {
-    // Check if user is logged in as owner (you can implement proper auth later)
-    const isOwner = localStorage.getItem('userType') === 'owner';
-    return isOwner;
-  };
+  useEffect(() => {
+    // Check if user is logged in as owner (only runs on client-side)
+    const userType = localStorage.getItem('userType');
+    setIsOwnerLoggedIn(userType === 'owner');
+  }, []);
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
@@ -45,7 +46,7 @@ export default function Navigation() {
                 {item.label}
               </Link>
             ))}
-            {showOwnerDashboard() && (
+            {isOwnerLoggedIn && (
               <Link
                 href="/owner-dashboard"
                 className={`text-sm font-medium transition-colors hover:text-blue-600 ${
@@ -68,7 +69,7 @@ export default function Navigation() {
                   {item.label}
                 </option>
               ))}
-              {showOwnerDashboard() && (
+              {isOwnerLoggedIn && (
                 <option value="/owner-dashboard">Owner Dashboard</option>
               )}
             </select>
