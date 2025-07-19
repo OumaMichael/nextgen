@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,11 +18,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gradient-to-br from-blue-50 via-white to-green-50 min-h-screen`}>
+      <body className={`${inter.className} bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-purple-900 min-h-screen transition-colors duration-300`}>
         <Navigation />
-        <main className="max-w-6xl mx-auto px-4 py-8">
+        <main className="max-w-7xl mx-auto px-6 py-12">
           {children}
         </main>
+        <Footer />
       </body>
     </html>
   );
