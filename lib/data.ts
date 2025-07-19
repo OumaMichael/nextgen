@@ -160,6 +160,18 @@ export const tables: Table[] = [
   { id: '6', number: 6, capacity: 6, status: 'available', ownerId: '3' },
   { id: '7', number: 7, capacity: 4, status: 'available', ownerId: '1' },
   { id: '8', number: 8, capacity: 6, status: 'reserved', ownerId: '2' },
+  { id: '9', number: 9, capacity: 4, status: 'available', ownerId: '1' },
+  { id: '10', number: 10, capacity: 6, status: 'available', ownerId: '2' },
+  { id: '11', number: 11, capacity: 8, status: 'reserved', ownerId: '3' },
+  { id: '12', number: 12, capacity: 4, status: 'available', ownerId: '1' },
+  { id: '13', number: 13, capacity: 6, status: 'available', ownerId: '2' },
+  { id: '14', number: 14, capacity: 4, status: 'reserved', ownerId: '3' },
+  { id: '15', number: 15, capacity: 8, status: 'available', ownerId: '1' },
+  { id: '16', number: 16, capacity: 6, status: 'available', ownerId: '2' },
+  { id: '17', number: 17, capacity: 4, status: 'available', ownerId: '3' },
+  { id: '18', number: 18, capacity: 6, status: 'reserved', ownerId: '1' },
+  { id: '19', number: 19, capacity: 4, status: 'available', ownerId: '2' },
+  { id: '20', number: 20, capacity: 8, status: 'available', ownerId: '3' },
 ];
 
 export const reviews: Review[] = [

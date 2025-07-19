@@ -14,9 +14,16 @@ export default function Navigation() {
     { href: '/order', label: 'Order' },
     { href: '/reservations', label: 'Tables' },
     { href: '/reviews', label: 'Reviews' },
-    { href: '/owner-dashboard', label: 'Owner' },
+    { href: '/checkout', label: 'Checkout' },
     { href: '/login', label: 'Login' },
   ];
+
+  // Only show owner dashboard if user is logged in as owner
+  const showOwnerDashboard = () => {
+    // Check if user is logged in as owner (you can implement proper auth later)
+    const isOwner = localStorage.getItem('userType') === 'owner';
+    return isOwner;
+  };
 
   return (
     <nav className="bg-white shadow-sm border-b border-gray-200">
@@ -38,6 +45,16 @@ export default function Navigation() {
                 {item.label}
               </Link>
             ))}
+            {showOwnerDashboard() && (
+              <Link
+                href="/owner-dashboard"
+                className={`text-sm font-medium transition-colors hover:text-blue-600 ${
+                  pathname === '/owner-dashboard' ? 'text-blue-600' : 'text-gray-600'
+                }`}
+              >
+                Owner Dashboard
+              </Link>
+            )}
           </div>
 
           <div className="md:hidden">
@@ -51,6 +68,9 @@ export default function Navigation() {
                   {item.label}
                 </option>
               ))}
+              {showOwnerDashboard() && (
+                <option value="/owner-dashboard">Owner Dashboard</option>
+              )}
             </select>
           </div>
         </div>

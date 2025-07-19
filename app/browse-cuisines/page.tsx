@@ -38,33 +38,42 @@ export default function BrowseCuisines() {
   const addToCart = (dishId: string, name: string, price: number, restaurantName: string) => {
     const existingItem = cart.find(item => item.dishId === dishId);
     
+    let newCart;
     if (existingItem) {
-      setCart(cart.map(item =>
+      newCart = cart.map(item =>
         item.dishId === dishId 
           ? { ...item, quantity: item.quantity + 1 }
           : item
-      ));
+      );
     } else {
-      setCart([...cart, {
+      newCart = [...cart, {
         dishId,
         name,
         price,
         quantity: 1,
         restaurantName
-      }]);
+      }];
     }
+    
+    setCart(newCart);
+    // Save to localStorage
+    localStorage.setItem('foodCourtCart', JSON.stringify(newCart));
   };
 
   const updateCartQuantity = (dishId: string, quantity: number) => {
+    let newCart;
     if (quantity === 0) {
-      setCart(cart.filter(item => item.dishId !== dishId));
+      newCart = cart.filter(item => item.dishId !== dishId);
     } else {
-      setCart(cart.map(item =>
+      newCart = cart.map(item =>
         item.dishId === dishId 
           ? { ...item, quantity }
           : item
-      ));
+      );
     }
+    
+    setCart(newCart);
+    localStorage.setItem('foodCourtCart', JSON.stringify(newCart));
   };
 
   const getTotalPrice = () => {
@@ -76,10 +85,17 @@ export default function BrowseCuisines() {
       alert('Please add items to your cart first!');
       return;
     }
-    alert(`Order submitted! Total: KSh ${getTotalPrice().toLocaleString()}\n\nItems:\n${cart.map(item => `${item.quantity}x ${item.name} from ${item.restaurantName}`).join('\n')}\n\nNote: This is a demo - payment functionality not implemented yet.`);
-    setCart([]);
-    setShowCart(false);
+    // Redirect to checkout page
+    window.location.href = '/checkout';
   };
+
+  // Load cart from localStorage on component mount
+  useEffect(() => {
+    const savedCart = localStorage.getItem('foodCourtCart');
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+  }, []);
 
   return (
     <div className="relative">

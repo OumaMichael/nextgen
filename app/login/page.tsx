@@ -17,7 +17,16 @@ export default function Login() {
       return;
     }
 
-    alert(`Login attempt with email: ${formData.email}\n\nNote: This is a demo - no actual authentication is implemented.`);
+    // Simple demo login - check if it's an owner email
+    if (formData.email.includes('owner') || formData.email.includes('@tamugrills.com') || formData.email.includes('@swahiliplates.com')) {
+      localStorage.setItem('userType', 'owner');
+      localStorage.setItem('userName', 'Restaurant Owner');
+      window.location.href = '/owner-dashboard';
+    } else {
+      localStorage.setItem('userType', 'customer');
+      localStorage.setItem('userName', 'Customer');
+      alert(`Login successful!\n\nNote: This is a demo - no actual authentication is implemented.`);
+    }
   };
 
   return (
