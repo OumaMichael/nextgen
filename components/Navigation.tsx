@@ -3,14 +3,15 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { ShoppingCart, Moon, Sun, Utensils } from 'lucide-react';
+import { ShoppingCart, Moon, Sun, Utensils, User, LogOut } from 'lucide-react';
 
 export default function Navigation() {
   const pathname = usePathname();
-  const [isOwnerLoggedIn, setIsOwnerLoggedIn] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userType, setUserType] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
   const [cartCount, setCartCount] = useState(0);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
 
   const navItems = [
     { href: '/', label: 'Home' },
@@ -19,10 +20,11 @@ export default function Navigation() {
   ];
 
   useEffect(() => {
-    // Check if user is logged in as owner (only runs on client-side)
-    const userType = localStorage.getItem('userType');
-    setIsOwnerLoggedIn(userType === 'owner');
-    setIsLoggedIn(!!userType);
+    // Check authentication state
+    const storedUserType = localStorage.getItem('userType');
+    const storedUserName = localStorage.getItem('userName');
+    setUserType(storedUserType);
+    setUserName(storedUserName);
     
     // Load cart count
     const savedCart = localStorage.getItem('foodCourtCart');
@@ -49,10 +51,30 @@ export default function Navigation() {
       } else {
         setCartCount(0);
       }
+
+      // Update auth state
+      const newUserType = localStorage.getItem('userType');
+      const newUserName = localStorage.getItem('userName');
+      setUserType(newUserType);
+      setUserName(newUserName);
     };
     
     window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    
+    // Listen for custom auth events
+    const handleAuthChange = () => {
+      const newUserType = localStorage.getItem('userType');
+      const newUserName = localStorage.getItem('userName');
+      setUserType(newUserType);
+      setUserName(newUserName);
+    };
+    
+    window.addEventListener('authChange', handleAuthChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('authChange', handleAuthChange);
+    };
   }, []);
   
   const toggleDarkMode = () => {
@@ -65,6 +87,22 @@ export default function Navigation() {
     } else {
       document.documentElement.classList.remove('dark');
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('userType');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('foodCourtCart');
+    setUserType(null);
+    setUserName(null);
+    setCartCount(0);
+    setShowUserMenu(false);
+    
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new Event('authChange'));
+    
+    // Redirect to home
+    window.location.href = '/';
   };
 
   return (
@@ -95,16 +133,18 @@ export default function Navigation() {
               </Link>
             ))}
             
-            <Link
-              href="/signup"
-              className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 dark:hover:text-orange-400 hover:scale-105 ${
-                pathname === '/signup' 
-                  ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-600 dark:border-orange-400' 
-                  : 'text-gray-700 dark:text-gray-300'
-              }`}
-            >
-              Sign Up
-            </Link>
+            {!userType && (
+              <Link
+                href="/signup"
+                className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 dark:hover:text-orange-400 hover:scale-105 ${
+                  pathname === '/signup' 
+                    ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-600 dark:border-orange-400' 
+                    : 'text-gray-700 dark:text-gray-300'
+                }`}
+              >
+                Sign Up
+              </Link>
+            )}
             
             {/* Cart Icon */}
             <Link
@@ -127,17 +167,47 @@ export default function Navigation() {
               {isDarkMode ? <Sun className="w-6 h-6" /> : <Moon className="w-6 h-6" />}
             </button>
             
-            {isOwnerLoggedIn && (
-              <Link
-                href="/owner-dashboard"
-                className={`text-lg font-semibold transition-all duration-300 hover:text-orange-600 dark:hover:text-orange-400 hover:scale-105 ${
-                  pathname === '/owner-dashboard' 
-                    ? 'text-orange-600 dark:text-orange-400 border-b-2 border-orange-600 dark:border-orange-400' 
-                    : 'text-gray-700 dark:text-gray-300'
-                }`}
-              >
-                Dashboard
-              </Link>
+            {/* User Menu */}
+            {userType && (
+              <div className="relative">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors"
+                >
+                  <User className="w-6 h-6" />
+                  <span className="text-lg font-semibold">Hi, {userName?.split(' ')[0] || 'User'}</span>
+                </button>
+                
+                {showUserMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2">
+                    {userType === 'owner' && (
+                      <Link
+                        href="/owner-dashboard"
+                        className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        Owner Dashboard
+                      </Link>
+                    )}
+                    {userType === 'customer' && (
+                      <Link
+                        href="/customer-dashboard"
+                        className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        My Dashboard
+                      </Link>
+                    )}
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
           </div>
 
@@ -163,21 +233,65 @@ export default function Navigation() {
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
             
-            <select
-              onChange={(e) => window.location.href = e.target.value}
-              value={pathname}
-              className="text-sm border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
-            >
-              {navItems.map((item) => (
-                <option key={item.href} value={item.href}>
-                  {item.label}
-                </option>
-              ))}
-              {isOwnerLoggedIn && (
-                <option value="/owner-dashboard">Dashboard</option>
-              )}
-              <option value="/signup">Sign Up</option>
-            </select>
+            {/* Mobile User Menu */}
+            {userType && (
+              <div className="relative">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="p-2 text-gray-700 dark:text-gray-300"
+                >
+                  <User className="w-5 h-5" />
+                </button>
+                
+                {showUserMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-2">
+                    <div className="px-4 py-2 text-sm text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700">
+                      Hi, {userName?.split(' ')[0] || 'User'}
+                    </div>
+                    {userType === 'owner' && (
+                      <Link
+                        href="/owner-dashboard"
+                        className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        Owner Dashboard
+                      </Link>
+                    )}
+                    {userType === 'customer' && (
+                      <Link
+                        href="/customer-dashboard"
+                        className="block px-4 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                        onClick={() => setShowUserMenu(false)}
+                      >
+                        My Dashboard
+                      </Link>
+                    )}
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center space-x-2"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            {!userType && (
+              <select
+                onChange={(e) => window.location.href = e.target.value}
+                value={pathname}
+                className="text-sm border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
+              >
+                {navItems.map((item) => (
+                  <option key={item.href} value={item.href}>
+                    {item.label}
+                  </option>
+                ))}
+                <option value="/signup">Sign Up</option>
+              </select>
+            )}
           </div>
         </div>
       </div>
